@@ -1,0 +1,54 @@
+.navigation{
+  display: inline-block;
+  padding: 0;
+
+  &-wrap{
+    background: #000000;
+    text-align: center;
+
+    .container{
+      position: relative;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  @include max-width(768px) {
+    position: absolute;
+    z-index: 100;
+    top: auto;
+    right: 0;
+    display: none;
+    width: 100%;
+    background: #000000;
+  }
+
+  ul{
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+  }
+
+  li{
+    display: inline-block;
+    padding: 11px;
+
+    @include max-width(768px) {
+      display: block;
+      min-width: 300px;
+    }
+
+    &.current a{
+      color: #e01f7a;
+    }
+  }
+
+  a{
+    color: #ffffff;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 3px;
+  }
+}

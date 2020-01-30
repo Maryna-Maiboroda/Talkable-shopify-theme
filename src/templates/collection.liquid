@@ -1,0 +1,135 @@
+{% if collection.image %}
+  <div class="collection-image">
+    <img src="{{ collection.image | img_url: '2048x600', crop: 'top' }}"/>
+  </div>
+{% endif %}
+<div class="container">
+
+  <header role="banner">
+    <h1 class="collection-title">{{ collection.title }}</h1>
+    {% if collection.description != blank %}
+      <div class="rte">
+        {{ collection.description }}
+      </div>
+    {% endif %}
+  </header>
+
+  {% if collection.all_tags.size > 0 %}
+    {% for tag in collection.all_tags %}
+      <h3 class="sub-collection-title">{{ tag | link_to_tag: tag }}</h3>
+
+      <div class="collection">
+        {% for product in collection.products %}
+          {% if product.tags contains tag %}
+            <a href="{{ product.url | within: collection }}" class="collection-item">
+              <div class="product-info">
+                {% if product.featured_image != blank %}
+                  <div class="product-image">
+                    {% include 'responsive-image' with
+                      image: product.featured_image,
+                      max_width: 480,
+                      max_height: 480
+                    %}
+                  </div>
+                {% endif %}
+
+                <div class="product-description">
+                  <p class="product-name">{{ product.title | escape }}</p>
+                  <div class="product-option">
+                    {% unless product.has_only_default_variant %}
+                      {% for option in product.options_with_values %}
+                        {% if option.name == "Color" %}
+                          {% for value in option.values %}
+                            {% case value %}
+                              {% when 'Deep Black' %}
+                                {% assign bg_color = "#000000" %}
+                              {% when 'Classic Black' %}
+                                {% assign bg_color = "#000000" %}
+                              {% when 'Persian Blue' %}
+                                {% assign bg_color = "#2b3fd4" %}
+                              {% when 'Cinnabar' %}
+                                {% assign bg_color = "#e6322b" %}
+                              {% when 'Porcelain' %}
+                                {% assign bg_color = "#eeceb1" %}
+                              {% when 'Watercourse' %}
+                                {% assign bg_color = "#077a4d" %}
+                              {% when 'Dark Violet' %}
+                                {% assign bg_color = "#8a06c1" %}
+                              {% when 'Caramel' %}
+                                {% assign bg_color = "#6a5555" %}
+                              {% when 'Coffee' %}
+                                {% assign bg_color = "#B49383" %}
+                              {% when 'Grey' %}
+                                {% assign bg_color = "#AD9C98" %}
+                              {% when 'Dark brown' %}
+                                {% assign bg_color = "#564943" %}
+                              {% when 'Mauve' %}
+                                 {% assign bg_color = "#641414" %}
+                              {% when 'Ruby woo' %}
+                                 {% assign bg_color = "#960D0D" %}
+                              {% when 'Germain' %}
+                                 {% assign bg_color = "#8F050F" %}
+                              {% when 'Pink nouveau' %}
+                                 {% assign bg_color = "#961471" %}
+                              {% when 'Blossom culture' %}
+                                 {% assign bg_color = "#AC6F79" %}
+                              {% when 'Taupe' %}
+                                 {% assign bg_color = "#C79F91" %}
+                              {% when 'Full speed' %}
+                                 {% assign bg_color = "#D20D52" %}
+                              {% when 'Fusion pink' %}
+                                 {% assign bg_color = "#CE5393" %}
+                              {% when 'Brave' %}
+                                 {% assign bg_color = "#CE6969" %}
+                              {% when 'Plumful' %}
+                                 {% assign bg_color = "#CA85A4" %}
+                              {% when 'Honeylove' %}
+                                 {% assign bg_color = "#C7B4BD" %}
+                              {% when 'Bronze special' %}
+                                 {% assign bg_color = "#9C6946" %}
+                              {% when 'Cacao' %}
+                                 {% assign bg_color = "#B7896D" %}
+                              {% when 'Limelight' %}
+                                 {% assign bg_color = "#CCAA92" %}
+                              {% when 'Birch' %}
+                                 {% assign bg_color = "#D4C0AD" %}
+                            {% else %}
+                              {% assign bg_color = "transparent" %}
+                            {% endcase %}
+                            <span class="product-color-preview" style="background-color: {{ bg_color }};"></span><span class="product-color-title">{{ option.values }}</span>
+                          {% endfor %}
+                        {% endif %}
+                      {% endfor %}
+                    {% endunless %}
+                  </div> <!-- /.product-option -->
+
+                  <span>
+                    {% if product.compare_at_price > product.price %}
+                      {% if product.price_varies %}
+                        {%- assign sale_price = product.price | money -%}
+                        {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
+                      {% else %}
+                        {{ 'products.product.on_sale' | t }}
+                        {{ product.price | money }}
+                      {% endif %}
+                    {% else %}
+                      <span class="product-price">
+                        {% if product.price_varies %}
+                          {%- assign price = product.price | money -%}
+                          {{ 'products.product.from_text_html' | t: price: price }}
+                        {% else %}
+                          {{ product.price | money }}
+                        {% endif %}
+                      </span>
+                    {% endif %}
+                  </span>
+                </div><!-- /.product-description -->
+              </div><!-- /.product-info -->
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div> <!-- /.collection -->
+
+    {% endfor %}
+  {% endif %}
+</div>

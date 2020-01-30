@@ -1,0 +1,318 @@
+{% comment %}
+  The data-label attributes on <td> elements are mobile-friendly
+  helpers used for responsive-table labels
+{% endcomment %}
+
+<div class="container">
+  <div class="row mobile-adaptive">
+    <div class="col">
+      <h1 class="page-title">{{ 'customer.account.title' | t }}</h1>
+    </div> <!-- /.col -->
+
+    <div class="col">
+      <div class="customer-info">
+        <p class="name">
+          {{ customer.default_address.first_name }}
+          {{ customer.default_address.last_name }}
+        </p>
+        <p>
+          {{ customer.default_address.street }}
+        </p>
+        <p>
+          {{ customer.default_address.city }}, {{ customer.default_address.zip }}
+        </p>
+        <p>
+          {{ customer.default_address.country }}
+        </p>
+        <a href="/account">{{ 'customer.account.return' | t }}</a>
+      </div>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+
+  <table class="responsive-table order-history-details">
+    <thead>
+      <tr>
+        <th class="text-left">{{ 'customer.order.product' | t }}</th>
+        <th class="text-center">{{ 'customer.order.price' | t }}</th>
+        <th class="text-center">{{ 'customer.order.quantity' | t }}</th>
+        <th class="text-left">{{ 'customer.order.total' | t }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for line_item in order.line_items %}
+      {% case line_item.variant.option1 %}
+       {% when 'Deep Black' %}
+         {% assign bg_color = "#000000" %}
+       {% when 'Classic Black' %}
+         {% assign bg_color = "#000000" %}
+       {% when 'Persian Blue' %}
+         {% assign bg_color = "#2b3fd4" %}
+       {% when 'Cinnabar' %}
+         {% assign bg_color = "#e6322b" %}
+       {% when 'Porcelain' %}
+         {% assign bg_color = "#eeceb1" %}
+       {% when 'Watercourse' %}
+         {% assign bg_color = "#077a4d" %}
+       {% when 'Dark Violet' %}
+         {% assign bg_color = "#8a06c1" %}
+       {% when 'Caramel' %}
+         {% assign bg_color = "#6a5555" %}
+       {% when 'Coffee' %}
+         {% assign bg_color = "#B49383" %}
+       {% when 'Grey' %}
+         {% assign bg_color = "#AD9C98" %}
+       {% when 'Dark brown' %}
+         {% assign bg_color = "#564943" %}
+       {% when 'Mauve' %}
+          {% assign bg_color = "#641414" %}
+       {% when 'Ruby woo' %}
+          {% assign bg_color = "#960D0D" %}
+       {% when 'Germain' %}
+          {% assign bg_color = "#8F050F" %}
+       {% when 'Pink nouveau' %}
+          {% assign bg_color = "#961471" %}
+       {% when 'Blossom culture' %}
+          {% assign bg_color = "#AC6F79" %}
+       {% when 'Taupe' %}
+          {% assign bg_color = "#C79F91" %}
+       {% when 'Full speed' %}
+          {% assign bg_color = "#D20D52" %}
+       {% when 'Fusion pink' %}
+          {% assign bg_color = "#CE5393" %}
+       {% when 'Brave' %}
+          {% assign bg_color = "#CE6969" %}
+       {% when 'Plumful' %}
+          {% assign bg_color = "#CA85A4" %}
+       {% when 'Honeylove' %}
+          {% assign bg_color = "#C7B4BD" %}
+       {% when 'Bronze special' %}
+          {% assign bg_color = "#9C6946" %}
+       {% when 'Cacao' %}
+          {% assign bg_color = "#B7896D" %}
+       {% when 'Limelight' %}
+          {% assign bg_color = "#CCAA92" %}
+       {% when 'Birch' %}
+          {% assign bg_color = "#D4C0AD" %}
+      {% else %}
+        {% assign bg_color = "transparent" %}
+      {% endcase %}
+
+      <tr id="{{ line_item.key }}" class="responsive-table-row">
+        <td data-label="{{ 'customer.order.product' | t }}">
+          <a class="order-history-details-product" href="{{ line_item.url }}">
+            <div class="order-history-details-product-image">
+              {{ line_item | img_url: '240x240' | img_tag: line_item.title }}
+            </div>
+            <div class="text-left">
+              <span class="order-history-details-product-title">{{ line_item.product.title }}</span>
+              <p>
+                <span class="option-name">Size:</span> <span class="option-value">{{ line_item.variant.option2 }}</span>
+              </p>
+              <p>
+                <span class="option-name">Color:</span> <span class="product-color-preview" style="background-color: {{ bg_color }};"></span> <span class="option-value">{{ line_item.variant.option1 }}</span>
+              </p>
+            </div>
+          </a>
+
+          {% if line_item.fulfillment %}
+            <dl>
+              <dt>{{ 'customer.order.fulfilled_at' | t }}</dt>
+              <dd>{{ line_item.fulfillment.created_at | date: format: 'month_day_year' }}</dd>
+
+              {% if line_item.fulfillment.tracking_url %}
+                <dt>{{ 'customer.order.tracking_url' | t }}</dt>
+                <dd>
+                  <a href="{{ line_item.fulfillment.tracking_url }}">
+                    {{ 'customer.order.track_shipment' | t }}
+                  </a>
+                </dd>
+              {% endif %}
+
+              <dt>{{ 'customer.order.tracking_company' | t }}</dt>
+              <dd>{{ line_item.fulfillment.tracking_company }}</dd>
+
+              {% if line_item.fulfillment.tracking_number %}
+                <dt>{{ 'customer.order.tracking_number' | t }}</dt>
+                <dd>{{ line_item.fulfillment.tracking_number }}</dd>
+              {% endif %}
+            </dl>
+          {% endif %}
+        </td>
+        <td data-label="{{ 'customer.order.price' | t }}">{{ line_item.price | money }}</td>
+        <td data-label="{{ 'customer.order.quantity' | t }}">{{ line_item.quantity }}</td>
+        <td data-label="{{ 'customer.order.total' | t }}">{{ line_item.quantity | times: line_item.price | money }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr class="responsive-table-row">
+        <td colspan="3" class="text-right">{{ 'customer.order.subtotal' | t }}</td>
+        <td class="text-left" data-label="{{ 'customer.order.subtotal' | t }}">{{ order.line_items_subtotal_price | money }}</td>
+      </tr>
+
+      {% for discount in order.discounts %}
+        <tr>
+          <td colspan="3" class="text-right">{{ 'customer.order.discount' | t }} <small><b>({{ discount.code }})</b></small></td>
+          <td class="text-left" data-label="{{ 'customer.order.discount' | t }}">{{ discount.savings | money }}</td>
+        </tr>
+      {% endfor %}
+
+      {% for shipping_method in order.shipping_methods %}
+        <tr>
+          <td colspan="3" class="text-right">{{ 'customer.order.shipping' | t }}<br/><small>({{ shipping_method.title }})</small></td>
+          <td class="text-left" data-label="{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})">{{ shipping_method.price | money }}</td>
+        </tr>
+      {% endfor %}
+
+      {% for tax_line in order.tax_lines %}
+        <tr>
+          <td colspan="3" class="text-right">{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)</td>
+          <td class="text-left" data-label="{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)">{{ tax_line.price | money }}</td>
+        </tr>
+      {% endfor %}
+
+      <tr>
+        <td class="text-left" colspan="2"><span class="order-number"><b>{{ 'customer.order.title' | t: name: order.name }},</b></span> {{ 'customer.order.date' | t: date: order.created_at | date: "%B %d, %Y %I:%M%p" }}</td>
+        <td class="text-right"><span class="text-uppercase"><b>{{ 'customer.order.total' | t }}</b></span></td>
+        <td class="text-left" data-label="{{ 'customer.order.total' | t }}"><b>{{ order.total_price | money }}</b></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <div class="order-history-details-mobile">
+    <b>{{ 'customer.order.title' | t: name: order.name }},</b></span> {{ 'customer.order.date' | t: date: order.created_at | date: "%B %d, %Y %I:%M%p" }}
+    {% for line_item in order.line_items %}
+      <div class="one-type-product">
+        <div class="order-history-details-product-image">
+          <a class="order-history-details-product" href="{{ line_item.url }}">
+            {{ line_item | img_url: '240x240' | img_tag: line_item.title }}
+          </a>
+        </div>
+        <div class="text-left">
+          <a class="order-history-details-product" href="{{ line_item.url }}">
+            <span class="order-history-details-product-title">{{ line_item.product.title }}</span>
+          </a>
+          <p>
+            <span class="option-name">Size:</span> <span class="option-value">{{ line_item.variant.option2 }}</span>
+          </p>
+          <p>
+            <span class="option-name">Color:</span> <span class="product-color-preview" style="background-color: {{ bg_color }};"></span> <span class="option-value">{{ line_item.variant.option1 }}</span>
+          </p>
+          <p><span class="option-name">Prize:</span> {{ line_item.price | money }}</p>
+          <p><span class="option-name">Quantity:</span> {{ line_item.quantity }}</p>
+          <p><span class="option-name">Total:</span> {{ line_item.quantity | times: line_item.price | money }}</p>
+        </div>
+      </div><!-- /.one-type-product -->
+    {% endfor %}
+    <div class="full-order-details">
+      <div class="row">
+        <div class="col text-left">
+          {{ 'customer.order.subtotal' | t }}
+        </div><!-- /.col -->
+
+        <div class="col text-right">
+          {{ order.line_items_subtotal_price | money }}
+        </div><!-- /.col -->
+      </div> <!-- /.row -->
+
+      {% for discount in order.discounts %}
+        <div class="row">
+          <div class="col text-left">
+            {{ 'customer.order.discount' | t }}<br/><small><b>({{ discount.code }})</b></small>
+          </div><!-- /.col -->
+
+          <div class="col text-right">
+            {{ discount.savings | money }}
+          </div><!-- /.col -->
+        </div> <!-- /.row -->
+      {% endfor %}
+
+      {% for shipping_method in order.shipping_methods %}
+        <div class="row">
+          <div class="col text-left">
+            {{ 'customer.order.shipping' | t }}<br/><small>({{ shipping_method.title }})</small>
+          </div><!-- /.col -->
+
+          <div class="col text-right">
+            {{ shipping_method.price | money }}
+          </div><!-- /.col -->
+        </div> <!-- /.row -->
+      {% endfor %}
+
+      {% for tax_line in order.tax_lines %}
+        <div class="row">
+          <div class="col text-left">
+            {{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)
+          </div><!-- /.col -->
+
+          <div class="col text-right">
+            {{ tax_line.price | money }}
+          </div><!-- /.col -->
+        </div> <!-- /.row -->
+      {% endfor %}
+      <div class="row">
+        <div class="col text-left">
+          <span class="text-uppercase"><b>{{ 'customer.order.total' | t }}</b></span>
+        </div><!-- /.col -->
+
+        <div class="col text-right">
+          <b>{{ order.total_price | money }}</b>
+        </div>
+      </div>
+
+    </div><!-- /.full-order-details -->
+  </div><!-- /.order-history-details-mobile -->
+
+  <div class="row mobile-adaptive order-history-details-address">
+
+    <div class="col one-address-details">
+      <h3 class="column-title">{{ 'customer.order.shipping_address' | t }}</h3>
+
+      <p class="status">{{ 'customer.order.fulfillment_status' | t }}: {{ order.fulfillment_status_label }}</p>
+
+      <p class="name">
+        {{ order.shipping_address.first_name }}
+        {{ order.shipping_address.last_name }}
+      </p>
+      <p>
+        {{ order.shipping_address.street }}
+      </p>
+      <p>
+        {{ order.shipping_address.city }}, {{ order.shipping_address.zip }}
+      </p>
+      <p>
+        {{ order.shipping_address.country }}
+      </p>
+
+    </div> <!-- /.col -->
+
+    <div class="col one-address-details">
+      <h3 class="column-title">{{ 'customer.order.billing_address' | t }}</h3>
+
+       <p class="status">{{ 'customer.order.payment_status' | t }}: {{ order.financial_status_label }}</p>
+
+        <p class="name">
+         {{ order.billing_address.first_name }}
+         {{ order.billing_address.last_name }}
+        </p>
+        <p>
+           {{ order.billing_address.street }}
+        </p>
+        <p>
+           {{ order.billing_address.city }}, {{ order.shipping_address.zip }}
+        </p>
+        <p>
+           {{ order.billing_address.country }}
+        </p>
+    </div> <!-- /.col -->
+
+    {% if order.cancelled %}
+      <div class="col one-address-details">
+        {%- assign cancelled_at = order.cancelled_at | date: "%B %d, %Y %I:%M%p" -%}
+        <p>{{ 'customer.order.cancelled' | t: date: cancelled_at }}</p>
+        <p>{{ 'customer.order.cancelled_reason' | t: reason: order.cancel_reason }}</p>
+      </div> <!-- /.col -->
+    {% endif %}
+
+  </div><!-- /.row -->
+</div>

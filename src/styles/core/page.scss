@@ -1,0 +1,33 @@
+.page-title{
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-size: 30px;
+  font-weight: 500;
+}
+
+
+.search-results{
+  width: 50%;
+  margin: auto;
+
+  @include max-width(768px){
+    width: 100%;
+  }
+
+  form{
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  input{
+    flex: 1 1 75%;
+  }
+
+  p{
+    margin: 0 0 20px;
+  }
+
+  a{
+    color: inherit;
+  }
+}

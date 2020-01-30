@@ -1,0 +1,90 @@
+input{
+  padding: 7px 15px;
+  font-size: 16px;
+  font-weight: 500;
+  border: 1px solid #f3f3f3;
+  background-color: #f3f3f3;
+  border-radius: 2px;
+
+  &:focus{
+    border-color: #a9a9ad;
+    outline: none;
+  }
+
+  &[disabled]{
+    opacity: 0.7;
+  }
+}
+
+label{
+  display: block;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.checkbox {
+  position: relative;
+  display: block;
+  user-select: none;
+  color: #111111;
+  cursor: pointer;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+  margin-bottom: 30px;
+  padding: 4px 0 4px 35px;
+  text-align: left;
+  vertical-align: middle;
+  -webkit-font-smoothing: antialiased;
+  word-break: normal;
+  text-transform: lowercase;
+
+  .checkmark{
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+  }
+
+  &.is-checked{
+    .checkmark:after{
+      display: block;
+      margin-top: 3px;
+      margin-left: 2px;
+      height: 12px;
+      width: 15px;
+      content: ' ';
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="15" height="12" viewBox="0 0 15 12"><g><g><path d="M4.756 9.002L1.208 5.454 0 6.654l4.756 4.756L14.966 1.2l-1.2-1.2z"/></g></g></svg>');
+      background-size: 15px 12px;
+    }
+  }
+
+  input {
+    cursor: pointer;
+    position: absolute;
+    width: 0;
+    opacity: 0;
+  }
+}
+
+select{
+  padding: 7px 15px;
+  font-size: 16px;
+  font-weight: 500;
+  border: 1px solid #f3f3f3;
+  background-color: #f3f3f3;
+  appearance: none;
+  border-radius: 2px;
+
+  &:focus{
+    border-color: #a9a9ad;
+    outline: none;
+  }
+
+  &[disabled]{
+    opacity: 0.7;
+  }
+}

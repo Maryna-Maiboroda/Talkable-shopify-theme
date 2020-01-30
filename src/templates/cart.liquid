@@ -1,0 +1,276 @@
+<div class="container">
+  {% if cart.item_count > 0 %}
+    <h1 class="page-title">{{ 'cart.general.title' | t }}</h1>
+
+    <form action="/cart" method="post" novalidate>
+      <div class="order-info">
+
+        <table class="responsive-table desktop-order-view">
+          <thead class="small--hide">
+            <tr>
+              <th colspan="2"></th>
+              <th>{{ 'cart.label.quantity' | t }}</th>
+              <th>{{ 'cart.label.price' | t }}</th>
+              <th>{{ 'cart.label.total' | t }}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for item in cart.items %}
+
+            {% comment %}
+
+            Cart Item Template
+            =====================
+            The data-label attributes on <td> elements are mobile-friendly
+            helpers used for responsive-table labels
+            {% endcomment %}
+
+              <tr class="responsive-table-row">
+
+                <td data-label="{{ 'customer.order.product' | t }}">
+
+                  {% if item.image != blank %}
+                    <a href="{{ item.url | within: collections.all }}">
+                      {{ item | img_url: '240x240' | img_tag: item.title }}
+                    </a>
+                  {% endif %}
+
+                </td>
+                <td class="cart-product-details">
+                  <a class="cart-product-name" href="{{ item.url }}">{{ item.product.title }}</a>
+
+                  {% if item.variant.options[1] %}
+                    <p><span class="option-name">{{ item.product.options[1] }}:</span> <span class="option-value">{{ item.variant.options[1] }}</span></p>
+                  {% endif %}
+
+                    {% case item.variant.options[0] %}
+                     {% when 'Deep Black' %}
+                       {% assign bg_color = "#000000" %}
+                     {% when 'Classic Black' %}
+                       {% assign bg_color = "#000000" %}
+                     {% when 'Persian Blue' %}
+                       {% assign bg_color = "#2b3fd4" %}
+                     {% when 'Cinnabar' %}
+                       {% assign bg_color = "#e6322b" %}
+                     {% when 'Porcelain' %}
+                       {% assign bg_color = "#eeceb1" %}
+                     {% when 'Watercourse' %}
+                       {% assign bg_color = "#077a4d" %}
+                     {% when 'Dark Violet' %}
+                       {% assign bg_color = "#8a06c1" %}
+                     {% when 'Caramel' %}
+                       {% assign bg_color = "#6a5555" %}
+                     {% when 'Coffee' %}
+                       {% assign bg_color = "#B49383" %}
+                     {% when 'Grey' %}
+                       {% assign bg_color = "#AD9C98" %}
+                     {% when 'Dark brown' %}
+                       {% assign bg_color = "#564943" %}
+                     {% when 'Mauve' %}
+                        {% assign bg_color = "#641414" %}
+                     {% when 'Ruby woo' %}
+                        {% assign bg_color = "#960D0D" %}
+                     {% when 'Germain' %}
+                        {% assign bg_color = "#8F050F" %}
+                     {% when 'Pink nouveau' %}
+                        {% assign bg_color = "#961471" %}
+                     {% when 'Blossom culture' %}
+                        {% assign bg_color = "#AC6F79" %}
+                     {% when 'Taupe' %}
+                        {% assign bg_color = "#C79F91" %}
+                     {% when 'Full speed' %}
+                        {% assign bg_color = "#D20D52" %}
+                     {% when 'Fusion pink' %}
+                        {% assign bg_color = "#CE5393" %}
+                     {% when 'Brave' %}
+                        {% assign bg_color = "#CE6969" %}
+                     {% when 'Plumful' %}
+                        {% assign bg_color = "#CA85A4" %}
+                     {% when 'Honeylove' %}
+                        {% assign bg_color = "#C7B4BD" %}
+                     {% when 'Bronze special' %}
+                        {% assign bg_color = "#9C6946" %}
+                     {% when 'Cacao' %}
+                        {% assign bg_color = "#B7896D" %}
+                     {% when 'Limelight' %}
+                        {% assign bg_color = "#CCAA92" %}
+                     {% when 'Birch' %}
+                        {% assign bg_color = "#D4C0AD" %}
+                    {% else %}
+                      {% assign bg_color = "transparent" %}
+                    {% endcase %}
+                    <p>
+                     <span class="option-name">{{ item.product.options[0] }}:</span> <span class="product-color-preview" style="background-color: {{ bg_color }};"></span>  <span class="option-value">{{ item.variant.options[0] }}</span>
+                    </p>
+
+                </td>
+                <td data-label="{{ 'cart.label.quantity' | t }}">
+                  <div class="input-group">
+                    <input type="button" value="-" class="button-minus-cart" data-field="quantity-field">
+                    <input type="number" name="updates[]" id="updates_{{ item.key }}" data-id="{{ item.key }}" step="1" min="1" value="{{ item.quantity }}" aria-label="{{ 'cart.general.item_quantity' | t }}" class="quantity-field">
+                    <input type="button" value="+" class="button-plus-cart" data-field="quantity-field">
+                  </div>
+                </td>
+                <td class="product-cart-price" data-label="{{ 'cart.label.price' | t }}">
+                  {% if item.original_line_price != item.line_price %}
+                    <span class="visually-hidden">{{ 'cart.label.discounted_price' | t }}</span>
+                    {{ item.price | money }}
+                    <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
+                    <s>{{ item.original_price | money }}</s>
+                  {% else %}
+                    {{ item.price | money }}
+                  {% endif %}
+                </td>
+                <td class="product-cart-total" data-label="{{ 'cart.label.total' | t }}">
+                  {{ item.line_price | money }}
+                </td>
+                <td>
+                  <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="cart-remove-product">
+                    <small><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><g><g><path d="M5.997 7.411l-4.293 4.293L.29 10.29l4.293-4.293L.29 1.704 1.704.29l4.293 4.293L10.29.29l1.414 1.414-4.293 4.293 4.293 4.293-1.414 1.414-4.293-4.293z"/></g></g></svg></small>
+                  </a>
+                </td>
+              </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="mobile-order-view">
+          {% for item in cart.items %}
+          <div class="cart-product-mobile">
+            <div class="product-image-mobile">
+              {% if item.image != blank %}
+                <a href="{{ item.url | within: collections.all }}">
+                  {{ item | img_url: '240x240' | img_tag: item.title }}
+                </a>
+              {% endif %}
+            </div>
+            <div class="product-description-mobile">
+              <a class="cart-product-name" href="{{ item.url }}">{{ item.product.title }}</a>
+
+              {% if item.variant.options[1] %}
+                <p><span class="option-name">{{ item.product.options[1] }}:</span> <span class="option-value">{{ item.variant.options[1] }}</span></p>
+              {% endif %}
+
+                {% case item.variant.options[0] %}
+                 {% when 'Deep Black' %}
+                   {% assign bg_color = "#000000" %}
+                 {% when 'Classic Black' %}
+                   {% assign bg_color = "#000000" %}
+                 {% when 'Persian Blue' %}
+                   {% assign bg_color = "#2b3fd4" %}
+                 {% when 'Cinnabar' %}
+                   {% assign bg_color = "#e6322b" %}
+                 {% when 'Porcelain' %}
+                   {% assign bg_color = "#eeceb1" %}
+                 {% when 'Watercourse' %}
+                   {% assign bg_color = "#077a4d" %}
+                 {% when 'Dark Violet' %}
+                   {% assign bg_color = "#8a06c1" %}
+                 {% when 'Caramel' %}
+                   {% assign bg_color = "#6a5555" %}
+                 {% when 'Coffee' %}
+                   {% assign bg_color = "#B49383" %}
+                 {% when 'Grey' %}
+                   {% assign bg_color = "#AD9C98" %}
+                 {% when 'Dark brown' %}
+                   {% assign bg_color = "#564943" %}
+                 {% when 'Mauve' %}
+                    {% assign bg_color = "#641414" %}
+                 {% when 'Ruby woo' %}
+                    {% assign bg_color = "#960D0D" %}
+                 {% when 'Germain' %}
+                    {% assign bg_color = "#8F050F" %}
+                 {% when 'Pink nouveau' %}
+                    {% assign bg_color = "#961471" %}
+                 {% when 'Blossom culture' %}
+                    {% assign bg_color = "#AC6F79" %}
+                 {% when 'Taupe' %}
+                    {% assign bg_color = "#C79F91" %}
+                 {% when 'Full speed' %}
+                    {% assign bg_color = "#D20D52" %}
+                 {% when 'Fusion pink' %}
+                    {% assign bg_color = "#CE5393" %}
+                 {% when 'Brave' %}
+                    {% assign bg_color = "#CE6969" %}
+                 {% when 'Plumful' %}
+                    {% assign bg_color = "#CA85A4" %}
+                 {% when 'Honeylove' %}
+                    {% assign bg_color = "#C7B4BD" %}
+                 {% when 'Bronze special' %}
+                    {% assign bg_color = "#9C6946" %}
+                 {% when 'Cacao' %}
+                    {% assign bg_color = "#B7896D" %}
+                 {% when 'Limelight' %}
+                    {% assign bg_color = "#CCAA92" %}
+                 {% when 'Birch' %}
+                    {% assign bg_color = "#D4C0AD" %}
+                {% else %}
+                  {% assign bg_color = "transparent" %}
+                {% endcase %}
+                <p>
+                 <span class="option-name">{{ item.product.options[0] }}:</span> <span class="product-color-preview" style="background-color: {{ bg_color }};"></span>  <span class="option-value">{{ item.variant.options[0] }}</span>
+                </p>
+                <div class="mobile-wrap">
+                  <div class="input-group">
+                    <input type="button" value="-" class="button-minus-cart" data-field="quantity-field">
+                    <input type="number" name="updates[]" id="updates_{{ item.key }}" data-id="{{ item.key }}" step="1" min="1" value="{{ item.quantity }}" aria-label="{{ 'cart.general.item_quantity' | t }}" class="quantity-field">
+                    <input type="button" value="+" class="button-plus-cart" data-field="quantity-field">
+                  </div>
+                  <span class="product-price-mobile">{{ item.line_price | money }}</span>
+                  <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="cart-remove-product">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><g><g><path fill="#111" fill-opacity=".1" d="M10.995 13.646l-8.05 8.05-2.651-2.652 8.049-8.05-8.05-8.049L2.946.294l8.05 8.049 8.049-8.05 2.651 2.652-8.049 8.05 8.05 8.049-2.652 2.651-8.05-8.049z"/></g></g></svg>
+                  </a>
+                </div>
+              </div><!-- /.product-description-mobile -->
+            </div>
+          {% endfor %}
+          </div>
+
+      <div class="cart-order-details">
+        <div>
+          <p class="cart-order-total">{{ 'cart.general.subtotal' | t }}</p>
+          {% if cart.total_discounts > 0 %}
+            <p>{{ 'cart.general.savings' | t }} {{ cart.total_discounts | money }}</p>
+          {% endif %}
+          <p class="cart-order-shipping">{{ 'cart.general.shipping_at_checkout' | t }}</p>
+        </div>
+        <p class="cart-order-subtotal">{{ cart.total_price | money }}</p>
+
+        <!-- {% if settings.cart_notes_enable %}
+          <label for="CartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
+          <textarea name="note" id="CartSpecialInstructions">{{ cart.note }}</textarea>
+        {% endif %}-->
+      </div><!-- /.cart-order-details -->
+      <div class="cart-order-buttons">
+        <!-- <input type="submit" name="update" class="button" value="{{ 'cart.general.update' | t }}"> -->
+        <a href="collections/all" class="continue">
+          Continue shopping
+        </a>
+        <input type="submit" name="checkout" class="button" value="{{ 'cart.general.checkout' | t }}">
+      </div>
+    </form>
+  {% else %}
+    <h1>{{ 'cart.general.title' | t }}</h1>
+
+    {% comment %}
+    Cart empty state
+    {% endcomment %}
+    <div class="supports-cookies">
+      <p>{{ 'cart.general.empty' | t }}</p>
+      <p>{{ 'cart.general.continue_browsing_html' | t }}</p>
+    </div>
+
+    {% comment %}
+    Cart no cookies state
+    ---------------------
+    Browser cookies are required to use the cart. If cookies aren't enabled in the
+    browser a message is displayed prompting the user to enable them.
+    {% endcomment %}
+    <div class="supports-no-cookies">
+      <p>{{ 'cart.general.cookies_required' | t }}</p>
+    </div>
+  {% endif %}
+</div>

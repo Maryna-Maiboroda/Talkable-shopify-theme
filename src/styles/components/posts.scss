@@ -1,0 +1,29 @@
+.post{
+  padding: 16px 0;
+  display: flex;
+
+  &:not(:last-child){
+    border-bottom: 1px solid  rgba(17, 17, 17, 0.1);
+  }
+
+  .responsive-image__wrapper{
+    margin: 0;
+  }
+
+  &-details{
+    padding: 0 16px 0 0;
+  }
+
+  &-publised-details{
+    font-size: 12px;
+  }
+
+  &-title{
+    font-family: 'Montserrat Alternates', sans-serif;
+  }
+}
+
+.article-image{
+  float: left;
+  margin-right: 20px;
+}

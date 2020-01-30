@@ -1,0 +1,82 @@
+[data-address='root'] [data-aria-hidden='true'],
+[data-add-fields-address] [data-aria-hidden='true'],
+[data-fields-address] [data-aria-hidden='true']{
+    display: none;
+}
+
+[data-name="firstName"],
+[data-name="lastName"],
+[data-name="company"],
+[data-name="phone"],
+[data-name="zone"]{
+    flex-basis: 49%;
+    padding-right: 15px;
+
+    @include max-width(550px){
+        flex-basis: 100%;
+        padding-right: 0;
+    }
+}
+
+
+[data-name="address1"],
+[data-name="city"],
+[data-name="country"]{
+    flex-basis: 49%;
+    padding-left: 15px;
+
+    @include max-width(550px){
+        flex-basis: 100%;
+        padding-left: 0;
+    }
+}
+
+[data-name="address2"] {
+    flex-basis: 24%;
+    padding-right: 15px;
+    padding-left: 15px;
+
+    @include max-width(550px){
+        flex-basis: 49%;
+        padding-left: 0;
+    }
+
+    @include max-width(320px){
+        flex-basis: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+[data-name="postalCode"]{
+    flex-basis: 24%;
+    padding-left: 15px;
+
+    @include max-width(550px){
+        flex-basis: 49%;
+    }
+
+    @include max-width(320px){
+        flex-basis: 100%;
+        padding-left: 0;
+    }
+}
+
+.address-form {
+    display: flex;
+    flex-wrap: wrap;
+
+    div{
+        margin-bottom: 20px;
+    }
+
+    input, select{
+        width: 100%;
+    }
+}
+
+.form-title{
+    text-transform: none;
+    font-size: 22px;
+    font-weight: 400;
+}

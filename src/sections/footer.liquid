@@ -1,0 +1,230 @@
+<footer class="footer">
+  <div class="container">
+    <div class="row footer-top footer-mobile-logo">
+      <div class="col">
+        {% if section.settings.show_logo_footer != blank -%}
+          <a href="/" class="footer-logo">
+            {% if section.settings.footer_logo != blank %}
+              <img class="logo-image" src="{{ section.settings.footer_logo | img_url: "38x38" }}"
+                srcset="{{ section.settings.footer_logo | img_url: "38x38" }} 1x, {{ section.settings.footer_logo | img_url: "38x38", scale: 2 }} 2x"
+                alt="{{ section.settings.logo.alt | default: shop.name }}">
+              <span>{{ shop.name }}</span>
+            {% else %}
+              {{ shop.name }}
+            {% endif %}
+          </a>
+        {% endif %}
+      </div><!-- /.col -->
+      <div class="col">
+        {%- assign social_accounts = 'Facebook, Twitter, Pinterest, Instagram, Snapchat, Tumblr, YouTube, Vimeo,' | split: ', ' -%}
+        <ul class="social-links">
+          {% for social in social_accounts %}
+            {%- assign social_handle = social | handleize -%}
+            {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
+            {% capture social_icon %}icon-{{ social_handle }}{% endcapture %}
+
+            {% if settings[social_link] != blank %}
+              <li>
+                <a href="{{ settings[social_link] }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: social }}">
+                  {% include social_icon %}
+                  <span class="icon-fallback-text">{{ social }}</span>
+                </a>
+              </li>
+            {% endif %}
+
+          {% endfor %}
+        </ul>
+      </div><!-- /.col -->
+    </div> <!-- /.row -->
+
+    <div class="row footer-mobile">
+      <div class="col">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+          {%- when 'link_list' -%}
+            {%- assign footer_linklist = block.settings.menu -%}
+            <ul class="footer-menu">
+              {%- for link in linklists[footer_linklist].links -%}
+                <li>
+                  <a href="{{ link.url }}" {% if link.current %} aria-current="page"{% endif %}>
+                    {{ link.title | escape }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endcase -%}
+        {% endfor %}
+      </div><!-- /.col -->
+
+      <div class="col">
+        {% if section.settings.show_payment_icons %}
+          {% unless shop.enabled_payment_types == empty %}
+            <span class="visually-hidden">{{ 'layout.footer.payment_methods' | t }}</span>
+            <ul class="payment-icons">
+              {% for type in shop.enabled_payment_types %}
+                <li>
+                  {{ type | payment_type_svg_tag: class: 'icon' }}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endunless %}
+        {% endif %}
+
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'newsletter' -%}
+              <div class="newsletter">
+                {%- if block.settings.title -%}
+                  <p class="newsletter-title">{{ block.settings.title | escape }}</p>
+                {%- endif -%}
+                {%- assign formId = 'ContactFooter' -%}
+                {% form 'customer', id: formId, novalidate: 'novalidate' %}
+                {%- if form.posted_successfully -%}
+                  <p class="form-message form-message--success" tabindex="-1" data-form-status>
+                    {{ 'general.newsletter_form.confirmation' | t }}
+                  </p>
+                {%- else -%}
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+                  <div class="form-group {% if form.errors %} input-group--error{% endif %}">
+                    <input type="email"
+                      name="contact[email]"
+                      id="{{ formId }}-email"
+                      class="input-group__field newsletter__input{% if form.errors %} input--error{% endif %}"
+                      value="{{ form.email }}"
+                      placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+                      aria-label="{{ 'general.newsletter_form.email_placeholder' | t }}"
+                      aria-required="true"
+                      required
+                      autocorrect="off"
+                      autocapitalize="off"
+                      {% if form.errors %}
+                        aria-invalid="true"
+                        aria-describedby="{{ formId }}-email-error"
+                        data-form-status
+                      {% endif %}>
+                      <button type="submit" class="btn newsletter__submit" name="commit" id="Subscribe">
+                        <span class="newsletter__submit-text--large">{{ 'general.newsletter_form.submit' | t }}</span>
+                      </button>
+                    </div>
+                  {% endif %}
+                  {% if form.errors contains 'email' %}
+                    <div id="{{ formId }}-email-error" class="input-error-message">
+                      {% include 'icon-error' %} {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.
+                    </div>
+                  {% endif %}
+                {% endform %}
+                <p class="newsletter-description">For more information view our <a href="/pages/privacy-policy">Privacy Policy</a>.<br/> You can unsubscribe at any time.</p>
+              </div>
+          {%- endcase -%}
+        {% endfor %}
+
+      </div> <!-- /.col -->
+    </div> <!-- /.row -->
+    <div class="copyright">
+      <ul class="terms-menu">
+        <li><a href="/pages/terms-of-use">Terms of Use</a></li>
+        <li><a href="/pages/privacy-policy">Privacy Policy</a></li>
+      </ul>
+      <!-- <small>{{ 'layout.footer.copyright' | t }} &copy; {{ 'now' | date: "%Y" }}, {{ shop.name | link_to: '/' }}. {{ powered_by_link }}</small> -->
+    </div>
+
+  <div><!-- /.container -->
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Payment methods"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": false
+    },
+   {
+      "type": "checkbox",
+      "id": "show_logo_footer",
+      "label": "Show logo",
+      "default": true
+   },
+   {
+     "type": "image_picker",
+     "id": "footer_logo",
+     "label": "Logo image"
+   },
+   {
+      "type": "header",
+      "content": "Color"
+    },
+    {
+      "type": "color",
+      "id": "color_footer_bg",
+      "label": "Background",
+      "default": "#F5F5F5"
+    },
+    {
+      "type": "color",
+      "id": "color_footer_text",
+      "label": "Text",
+      "default": "#3d4246"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Quick links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "footer"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Talk about your business"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share store details, promotions, or brand content with your customers.</p>"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "limit": 1,
+      "name": "Newsletter signup",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "info": "Subscribers will be added to your “accepts marketing” [customer list.](/admin/customers?query=&accepts_marketing=1)",
+          "default": "Newsletter"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,11 @@
+<form action="/search" method="get" role="search" class="search-form">
+    <input class="search-input" type="search"
+        name="q"
+        id="Search-{{ section.id }}"
+        value="{{ search.terms | escape }}"
+        placeholder="{{ 'general.search.placeholder' | t }}">
+
+    <button type="submit" class="search-button">
+        {% include 'icon-search' %}
+    </button>
+</form>

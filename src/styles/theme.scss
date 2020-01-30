@@ -1,0 +1,64 @@
+@charset 'UTF-8';
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat+Alternates:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap');
+
+/**
+ * [replace with theme name] | Built with Slate
+ */
+@import '~normalize.css/normalize';
+
+// Settings
+@import './variables';
+
+// Tools
+@import './tools/mixins';
+@import './tools/functions';
+
+// Core
+@import './core/forms';
+@import './core/helpers';
+@import './core/layout';
+@import './core/header';
+@import './core/footer';
+@import './core/media';
+@import './core/responsive-tables';
+@import './core/rte';
+@import './core/typography';
+@import "./core/page";
+@import "./core/cart";
+
+// Components
+@import './components/buttons';
+@import './components/hero-banner';
+@import './components/icons';
+@import './components/placeholders';
+@import './components/responsive-images';
+@import './components/address-forms';
+@import './components/navigation';
+@import "./components/search-form";
+@import "./components/breadcrumbs";
+@import "./components/form-elements";
+@import "./components/posts";
+
+// Sections
+@import './sections/blog-posts';
+@import './sections/collection-list';
+@import './sections/featured-collection';
+@import './sections/image-with-text';
+
+//Modules
+@import "./modules/slick";
+@import "./modules/slick-theme";
+
+// Templates
+@import './templates/gift_card';
+@import './templates/product';
+@import "./templates/collection";
+
+// Customer Templates
+@import "./templates/customers/login";
+@import "./templates/customers/register";
+@import "./templates/customers/account";
+
+
+

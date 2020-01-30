@@ -1,0 +1,40 @@
+{% if product.id %}
+  <script>
+    {% assign current_variant = product.selected_or_first_available_variant %}
+    window._talkableq = window._talkableq || [];
+    window._tkbl_data = {
+      customer: {
+        product: {
+          sku: '{{ current_variant.sku | default: product.id }}',     // Product ID unique identifier
+          title: '{{ product.title | escape }}', // Title of the product
+          url: document.location.href,
+          custom_properties: {
+            images: {
+              default: '{{ product.featured_image | img_url: '660x645', crop: 'center' }}',
+              mobile: '{{ product.featured_image | img_url: '750x375', crop: 'center' }}',
+              facebook: '{{ product.featured_image | img_url: '1200x630', crop: 'center' }}',
+              email: '{{ product.featured_image | img_url: '480x265', crop: 'center' }}'
+            },
+        	price : '{{ current_variant.price | default: product.price | divided_by: 100.00 }}',
+        	priceCurrency : '{{ cart.currency.iso_code }}'
+          }
+        }
+      },
+      campaign_tags: ['product-sharing'],
+      iframe: {
+        container: "talkable-product-sharing",
+        name: "talkable-product-sharing-iframe"
+      }
+    };
+
+    document.addEventListener("DOMContentLoaded", function() {
+      $(document).on('variantChange', function(e) {
+        if (e.variant && e.variant.sku && e.variant.price) {
+          window._tkbl_data.customer.product.sku = e.variant.sku;
+          window._tkbl_data.customer.product.custom_properties.price = e.variant.price / 100.00;
+          window._talkableq.push(["register_affiliate", window._tkbl_data]);
+        }
+      });
+    });
+  </script>
+{% endif %}

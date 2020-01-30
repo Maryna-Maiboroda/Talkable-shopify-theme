@@ -1,0 +1,99 @@
+<div class="container">
+  <div class="row mobile-adaptive">
+    <div class="col">
+      <h1 class="page-title">{{ 'customer.account.title' | t }}</h1>
+    </div><!-- /.col -->
+
+    <div class="col">
+      <div class="customer-info">
+        <p class="name">
+          {{ customer.default_address.first_name }}
+          {{ customer.default_address.last_name }}
+        </p>
+        <p>
+          {{ customer.default_address.street }}
+        </p>
+        <p>
+          {{ customer.default_address.city }}, {{ customer.default_address.zip }}
+        </p>
+        <p>
+          {{ customer.default_address.country }}
+        </p>
+
+        <a href="/account/addresses">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a>
+      </div>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+
+  <div class="order-history">
+    <h2 class="order-history-title">{{ 'customer.orders.title' | t }}</h2>
+      {% if customer.orders.size != 0 %}
+        <table class="responsive-table customer-order-list">
+          <thead>
+            <tr>
+              <th>{{ 'customer.orders.order_number' | t }}</th>
+              <th>{{ 'customer.orders.date' | t }}</th>
+              <th>{{ 'customer.orders.payment_status' | t }}</th>
+              <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+              <th>{{ 'customer.orders.total' | t }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in customer.orders %}
+              <tr class="responsive-table-row">
+                <td class="order" data-label="{{ 'customer.orders.order_number' | t }}">{{ order.name | link_to: order.customer_url }}</td>
+                <td data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: format: 'month_day_year' }}</td>
+                <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+                <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
+                <td data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="customer-order-list-mobile">
+          {% for order in customer.orders %}
+            <div class="one-order">
+              <div class="row">
+                <div class="col">
+                  {{ order.name | link_to: order.customer_url }}
+                </div> <!--/.col -->
+
+                <div class="col text-right">
+                  {{ order.created_at | date: format: 'month_day_year' }}
+                </div> <!--/.col -->
+              </div> <!- /.row -->
+
+              <div class="row">
+                <div class="col">
+                  {{ 'customer.orders.payment_status' | t }}
+                </div> <!--/.col -->
+
+                <div class="col text-right">
+                  {{ order.financial_status_label }}
+                </div> <!--/.col -->
+              </div> <!- /.row -->
+
+              <div class="row">
+                <div class="col">
+                 {{ 'customer.orders.fulfillment_status' | t }}
+                </div> <!--/.col -->
+
+                <div class="col text-right">
+                  {{ order.fulfillment_status_label }}
+                </div> <!--/.col -->
+              </div> <!- /.row -->
+
+              <div class="text-right"><b>{{ order.total_price | money }}</b></div>
+            </div> <!-- /.one-order -->
+          {% endfor %}
+        </div>
+      {% else %}
+        <p>{{ 'customer.orders.none' | t }}</p>
+      {% endif %}
+  </div>
+
+  <div id="talkable-offer"></div>
+
+</div><!-- /.container -->
+

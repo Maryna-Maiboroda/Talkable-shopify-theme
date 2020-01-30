@@ -1,0 +1,28 @@
+#create_customer{
+  width: 50%;
+  margin: auto;
+
+  @include max-width(768px){
+    width: 100%;
+  }
+
+  input{
+    display: block;
+    width: 100%;
+    margin: 0 0 15px 0;
+  }
+
+  p{
+    margin: 0 0 20px 0;
+  }
+
+  a{
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.form-links{
+  padding-top: 20px;
+  text-align: center;
+}

@@ -1,0 +1,231 @@
+{% capture product-color %}
+  <div class="product-color">
+    {% unless product.has_only_default_variant %}
+      {% for option in product.options_with_values %}
+        {% if option.name == "Color" %}
+          {% for value in option.values %}
+            {% case value %}
+              {% when 'Deep Black' %}
+                {% assign bg_color = "#000000" %}
+              {% when 'Classic Black' %}
+                {% assign bg_color = "#000000" %}
+              {% when 'Persian Blue' %}
+                {% assign bg_color = "#2b3fd4" %}
+              {% when 'Cinnabar' %}
+                {% assign bg_color = "#e6322b" %}
+              {% when 'Porcelain' %}
+                {% assign bg_color = "#eeceb1" %}
+              {% when 'Watercourse' %}
+                {% assign bg_color = "#077a4d" %}
+              {% when 'Dark Violet' %}
+                {% assign bg_color = "#8a06c1" %}
+              {% when 'Caramel' %}
+                {% assign bg_color = "#6a5555" %}
+              {% when 'Coffee' %}
+                {% assign bg_color = "#B49383" %}
+              {% when 'Grey' %}
+                {% assign bg_color = "#AD9C98" %}
+              {% when 'Dark brown' %}
+                {% assign bg_color = "#564943" %}
+              {% when 'Mauve' %}
+                 {% assign bg_color = "#641414" %}
+              {% when 'Ruby woo' %}
+                 {% assign bg_color = "#960D0D" %}
+              {% when 'Germain' %}
+                 {% assign bg_color = "#8F050F" %}
+              {% when 'Pink nouveau' %}
+                 {% assign bg_color = "#961471" %}
+              {% when 'Blossom culture' %}
+                 {% assign bg_color = "#AC6F79" %}
+              {% when 'Taupe' %}
+                 {% assign bg_color = "#C79F91" %}
+              {% when 'Full speed' %}
+                 {% assign bg_color = "#D20D52" %}
+              {% when 'Fusion pink' %}
+                 {% assign bg_color = "#CE5393" %}
+              {% when 'Brave' %}
+                 {% assign bg_color = "#CE6969" %}
+              {% when 'Plumful' %}
+                 {% assign bg_color = "#CA85A4" %}
+              {% when 'Honeylove' %}
+                 {% assign bg_color = "#C7B4BD" %}
+              {% when 'Bronze special' %}
+                 {% assign bg_color = "#9C6946" %}
+              {% when 'Cacao' %}
+                 {% assign bg_color = "#B7896D" %}
+              {% when 'Limelight' %}
+                 {% assign bg_color = "#CCAA92" %}
+              {% when 'Birch' %}
+                 {% assign bg_color = "#D4C0AD" %}
+            {% else %}
+              {% assign bg_color = "transparent" %}
+            {% endcase %}
+            <p class="product-color-name">{{ option.values }}</p>
+            <span class="product-color-view" style="background-color: {{ bg_color }};"></span>
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    {% endunless %}
+  </div> <!-- /.product-color -->
+{% endcapture %}
+
+<section data-section-id="{{ section.id }}" data-section-type="product" class="product-block">
+  {% include 'breadcrumbs' %}
+
+  <div class="row one-product">
+    <div class="col">
+      <div class="mobile-wrap">
+        {{ product-color }}
+      </div>
+
+      <div class="one-product-image">
+        {%- assign current_variant = product.selected_or_first_available_variant -%}
+        {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+
+        {% for image in product.images %}
+          {% capture wrapper_class %}
+            {%- unless featured_image == image -%}
+              hide
+            {%- endunless -%}
+          {% endcapture %}
+
+          {% include 'responsive-image' with
+            image: image,
+            max_width: 248,
+            max_height: 318,
+            image_attributes: "data-product-featured-image",
+            wrapper_class: wrapper_class,
+            wrapper_attributes: "data-product-image-wrapper",
+          %}
+        {% endfor %}
+
+
+        {% if product.images.size > 1 %}
+          <ul>
+            {% for image in product.images %}
+              <li>
+                <a href="{{ image.src | img_url: '480x480' }}" data-thumbnail-id="{{ image.id }}" data-product-single-thumbnail{% if featured_image == image %} aria-current="true"{% endif %}>
+                  <img class="product-single__thumbnail-image" src="{{ image.src | img_url: '160x160' }}" alt="{{ image.alt | escape }}">
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div> <!-- /.product-image -->
+
+    </div><!-- /.col -->
+
+    <div class="col">
+      <div class="one-product-description">
+        <div class="mobile-view">
+          <h1 class="one-product-title">{{ product.title }}</h1>
+
+          <div class="one-product-price" data-price-wrapper>
+            <span data-product-price>
+              {{ current_variant.price | money }}
+            </span>
+
+
+            {% if product.compare_at_price_max > product.price %}
+              <span class="visually-hidden" data-compare-text>{{ 'products.product.regular_price' | t }}</span>
+              <s data-compare-price>
+                {% if current_variant.compare_at_price > current_variant.price %}
+                  {{ current_variant.compare_at_price | money }}
+                {% endif %}
+              </s>
+            {% endif %}
+          </div>
+        </div> <!-- /.mobile-view -->
+
+        <!--<div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>-->
+
+        <div class="product-size-wrap">
+          {% unless product.has_only_default_variant %}
+            {% for option in product.options_with_values %}
+              {% if option.name == "Size" %}
+                {% for value in option.values %}
+                  <div class="product-size">
+                    <p class="product-size-name">{{ option.values }}</p>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          {% endunless %}
+        </div>
+
+
+        {% form 'product', product, data-product-form: '', data-product-handle: product.handle, data-enable-history-state: 'true' %}
+
+        <select name="id" id="ProductSelect-{{ section.id }}" class="product-form__variants no-js">
+          {% for variant in product.variants %}
+            {% if variant.available %}
+              <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+                {{ variant.title }}
+              </option>
+            {% else %}
+              <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+
+        <div class="line"></div>
+
+        {{ product-color }}
+
+         <div class="add-to-cart-wrap">
+          <div class="input-group">
+            <input type="button" value="-" class="button-minus" data-field="quantity-field">
+            <input type="number" id="Quantity" step="1" min="1" value="1" name="quantity" class="quantity-field">
+            <input type="button" value="+" class="button-plus" data-field="quantity-field">
+          </div>
+
+            <button
+              class="add-to-cart"
+              type="submit"
+              name="add"
+              data-submit-button
+              {% unless current_variant.available %}disabled="disabled"{% endunless %}>
+                <span data-submit-button-text>
+                  {% if current_variant.available %}
+                    {{ 'products.product.add_to_cart' | t }}
+                  {% else %}
+                    {{ 'products.product.sold_out' | t }}
+                  {% endif %}
+                </span>
+            </button>
+         </div>
+        {% endform %}
+
+        <div id="talkable-product-sharing"></div>
+
+        <div class="rte one-product-full-description">
+          {{ product.description }}
+        </div>
+
+        {% comment %}
+
+          {% if section.settings.show_share_buttons %}
+            {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product %}
+          {% endif %}
+        {% endcomment %}
+      </div> <!-- /.one-product-description -->
+
+    </div><!-- /.col -->
+
+  </div><!-- /.row -->
+
+</section>
+
+{% schema %}
+  {
+    "name": "Product pages",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_share_buttons",
+        "label": "Show social sharing buttons",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

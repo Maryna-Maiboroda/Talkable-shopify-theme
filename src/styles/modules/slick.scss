@@ -1,0 +1,197 @@
+/* Slider */
+
+.slick-slider {
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -ms-touch-action: pan-y;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+}
+.slick-list {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    margin: 0;
+    padding: 0;
+
+    &:focus {
+        outline: none;
+    }
+
+    &.dragging {
+        cursor: pointer;
+        cursor: hand;
+    }
+}
+.slick-slider .slick-track,
+.slick-slider .slick-list {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+.slick-track {
+    position: relative;
+    left: 0;
+    top: 0;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    &:before,
+    &:after {
+        content: "";
+        display: table;
+    }
+
+    &:after {
+        clear: both;
+    }
+
+    .slick-loading & {
+        visibility: hidden;
+    }
+}
+.slick-slide {
+    position: relative;
+    float: left;
+    height: 100%;
+    min-height: 1px;
+    [dir="rtl"] & {
+        float: right;
+    }
+    .slider_img {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+
+        @include max-width(650px){
+            display: none;
+        }
+    }
+    .slider_img_mobile{
+        display: none;
+        @include max-width(650px) {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+    &.slick-loading img {
+        display: none;
+    }
+
+    display: none;
+
+    &.dragging img {
+        pointer-events: none;
+    }
+
+    .slick-initialized & {
+        display: block;
+    }
+
+    .slick-loading & {
+        visibility: hidden;
+    }
+
+    .slick-vertical & {
+        display: block;
+        height: auto;
+        border: 1px solid transparent;
+    }
+}
+.slick-arrow.slick-hidden {
+    display: none;
+}
+
+
+.content_wrap{
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+
+    @include max-width(650px){
+        text-align: center!important;
+    }
+
+    &.is-right{
+        left: auto;
+        right: 10%;
+        text-align: right;
+    }
+
+    @include max-width(500px) {
+        right: 10px;
+        left: 10px;
+
+        &.is-right{
+            right: 10px;
+            left: 10px;
+        }
+    }
+
+    .button{
+        padding: 13px 35px;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        background-color: #e01f7a;
+        color: #ffffff;
+
+        @include max-width(650px){
+            display: inline-block;
+        }
+    }
+}
+
+.slider_title{
+    margin: 0 0 8px;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-weight: 400;
+    font-size: 60px;
+    color: #ffffff;
+    text-shadow: 1px 1px 2px black;
+    text-transform: capitalize;
+
+    @include max-width(768px) {
+        font-size: 38px;
+    }
+
+    @include max-width(650px){
+        font-size: 50px;
+        text-align: left;
+        margin: 0;
+    }
+
+}
+
+.slider_text{
+    color: #fff;
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0 0 19px;
+    text-shadow: 1px 1px 2px black;
+
+    @include max-width(769px) {
+        font-size: 20px;
+        margin: 0;
+    }
+
+    @include max-width(650px){
+        font-size: 22px;
+        font-weight: 400;
+        margin-bottom: 60px;
+        text-align: left;
+    }
+}

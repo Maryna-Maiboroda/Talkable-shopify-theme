@@ -1,0 +1,321 @@
+.customer-info{
+  padding: 0 20px;
+  font-size: 22px;
+  text-align: right;
+
+  @include max-width(768px){
+    font-size: 16px;
+    text-align: left;
+    padding: 0;
+  }
+
+  .name{
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  p{
+    margin: 0;
+  }
+
+  a{
+    color: inherit;
+  }
+}
+
+.order-history{
+  margin-bottom: 30px;
+
+  @include max-width(768px){
+    margin-top: 30px;
+  }
+
+  .one-order {
+    padding: 10px 0;
+
+    &:not(:last-child){
+      border-bottom: 1px solid rgba(17, 17, 17, 0.1);
+    }
+
+    a {
+      color: inherit;
+      font-weight: 500;
+    }
+  }
+
+  &-title{
+    color: #e01f7a;
+    text-transform: initial;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+  }
+
+  .responsive-table-row{
+    font-size: 16px;
+  }
+
+  thead tr{
+    border-bottom: 0;
+    th {
+      background-color: #f3f3f3;
+      color: #111111;
+      font-weight: 400;
+      font-size: 16px;
+      text-transform: uppercase;
+    }
+  }
+
+  tbody tr{
+    border-bottom: 1px solid rgba(17, 17, 17, 0.1);
+  }
+
+  .order a{
+    font-weight: 600;
+    color: inherit;
+  }
+}
+
+.one-address{
+  position: relative;
+  padding: 20px 0 0;
+  margin-right: 50px;
+
+  @include max-width(768px){
+    margin: 0;
+  }
+
+  &-title{
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 22px;
+    margin: 0;
+  }
+
+  &-info{
+    font-size: 300;
+
+    p{
+      margin: 0;
+      line-height: 1.5;
+
+      &.name{
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+.add-address-col{
+  flex-grow: 2;
+}
+
+.form-wrap{
+  padding: 30px;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.19);
+  border: 1px solid #f0f0f0;
+
+  @include max-width(768px){
+    margin-top: 20px;
+  }
+}
+
+.order-history-details{
+  margin-top: 30px;
+  border-top: 1px solid #ebebeb;
+
+  @include max-width(768px){
+    display: none;
+  }
+
+
+  thead tr{
+    border: none;
+
+    th{
+      font-size: 12px;
+      font-weight: 500;
+
+      &.text-left{
+        text-align: left;
+      }
+    }
+  }
+
+  td.text-right{
+    text-align: right;
+  }
+
+  td.text-left{
+    text-align: left;
+  }
+
+  tbody td:last-child{
+    text-align: left;
+    font-size: 16px
+  }
+
+  &-product{
+    display: flex;
+    color: inherit;
+    text-decoration: none;
+
+    &-image{
+      margin-right: 16px;
+    }
+
+    &-title{
+      text-transform: uppercase;
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+
+  tfoot{
+    border-top: 1px solid #ebebeb;
+
+    td{
+      padding: 5px 8px;
+      font-size: 16px;
+    }
+  }
+
+  small{
+    font-size: 12px;
+  }
+
+  b{
+    font-weight: 600;
+  }
+
+  .order-number{
+    font-size: 22px;
+  }
+
+  &-address{
+    margin-top: 45px;
+    margin-bottom: 45px;
+    padding: 30px;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.19);
+
+    .column-title{
+      margin: 0;
+      font-size: 22px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .status{
+      margin: 0;
+      font-size: 14px;
+      font-weight: 300;
+    }
+
+    p{
+      margin: 0;
+      font-weight: 300;
+      font-size: 22px;
+
+      &.name{
+        margin-top: 20px;
+        font-weight: 400;
+      }
+    }
+
+    @include max-width(768px){
+
+      .one-address-details{
+        p {
+          font-size: 16px;
+        }
+
+        &:not(:last-child) {
+          margin-bottom: 30px;
+        }
+
+        .name{
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+.order-history-details-mobile{
+  display: none;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #ebebeb;
+
+  .full-order-details{
+    border-top: 1px solid #111;
+
+    .col{
+      &:first-child{
+        flex-grow: 2;
+      }
+
+      padding: 5px 0;
+    }
+  }
+
+  .one-type-product{
+    display: flex;
+    padding: 20px 0;
+
+    .order-history-details-product-image{
+      max-width: 95px;
+      box-shadow: 0 0 6px rgba(0,0,0,.1);
+    }
+
+    p{
+      margin: 0;
+    }
+  }
+
+  @include max-width(768px){
+    display: block;
+  }
+}
+
+.customer-order-list{
+  @include max-width(768px){
+    display: none;
+  }
+}
+
+.customer-order-list-mobile{
+  display: none;
+
+  @include max-width(768px){
+    display: block;
+  }
+}
+
+.address-info{
+  margin-top: 30px;
+}
+
+[data-address-delete-form]{
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  button{
+    border: 0;
+    background: transparent;
+  };
+}
+
+.add-new-address, [data-address-form]{
+  @include max-width(550px){
+    .cancel{
+      margin-bottom: 15px;
+    }
+
+    .button{
+      width: 100%;
+    }
+  }
+}
+

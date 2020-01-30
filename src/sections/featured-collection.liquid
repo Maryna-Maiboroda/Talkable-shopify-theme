@@ -1,0 +1,118 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available in the "Featured Collection" section in the theme editor.
+
+  Theme Store required settings
+  - Collection
+
+  Theme Store optional settings
+  - Heading: title of the featured collection section
+{%- endcomment -%}
+<section class="featured-collection">
+  <div class="container">
+    {% if section.settings.title != blank %}
+      <h2 class="section-title">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+
+    {%- assign collection = collections[section.settings.collection] -%}
+
+      {% for product in collection.products limit: 4 %}
+        <a href="{{ product.url | within: collection }}" class="featured-collection-item">
+          <div class="product-info">
+            {% if product.featured_image != blank %}
+              <div class="featured-collection__image">
+                {% include 'responsive-image' with
+                  image: product.featured_image,
+                  max_width: 480,
+                  max_height: 480
+                %}
+              </div>
+            {% endif %}
+
+            <div class="product-description">
+              <p class="product-name">{{ product.title | escape }}</p>
+              <div class="product-option">
+                {% unless product.has_only_default_variant %}
+                  {% for option in product.options_with_values %}
+                    {% if option.name == "Color" %}
+                      {% for value in option.values %}
+                        {% case value %}
+                          {% when 'Deep Black' %}
+                            {% assign bg_color = "#000000" %}
+                          {% when 'Persian Blue' %}
+                            {% assign bg_color = "#2b3fd4" %}
+                          {% when 'Cinnabar' %}
+                            {% assign bg_color = "#e6322b" %}
+                          {% when 'Porcelain' %}
+                            {% assign bg_color = "#eeceb1" %}
+                        {% else %}
+                          {% assign bg_color = "transparent" %}
+                        {% endcase %}
+                        <span class="product-color-preview" style="background-color: {{ bg_color }};"></span><span class="product-color-title">{{ option.values }}</span>
+                      {% endfor %}
+                    {% endif %}
+                  {% endfor %}
+                {% endunless %}
+              </div> <!-- /.product-option -->
+
+              <span>
+                {% if product.compare_at_price > product.price %}
+                  {% if product.price_varies %}
+                    {%- assign sale_price = product.price | money -%}
+                    {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
+                  {% else %}
+                    {{ 'products.product.on_sale' | t }}
+                    {{ product.price | money }}
+                  {% endif %}
+                {% else %}
+                  <span class="product-price">
+                    {% if product.price_varies %}
+                      {%- assign price = product.price | money -%}
+                      {{ 'products.product.from_text_html' | t: price: price }}
+                    {% else %}
+                      {{ product.price | money }}
+                    {% endif %}
+                  </span>
+                {% endif %}
+              </span>
+            </div><!-- /.product-description -->
+          </div><!-- /.product-info -->
+        </a>
+      {% else %}
+        {% for i in (1..6) %}
+          <a href="#" class="featured-collection-item">
+            {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+            {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
+
+            <p>{{ 'homepage.onboarding.product_title' | t }}</p>
+            <p>{{ 1999 | money }}</p>
+          </a>
+        {% endfor %}
+      {% endfor %}
+   </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Featured collection",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Featured collection"
+      },
+      {
+        "id": "collection",
+        "type": "collection",
+        "label": "Collection"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured collection",
+        "category": "Collection"
+      }
+    ]
+  }
+{% endschema %}
